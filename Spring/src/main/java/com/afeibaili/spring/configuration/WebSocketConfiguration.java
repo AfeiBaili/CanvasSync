@@ -1,6 +1,7 @@
 package com.afeibaili.spring.configuration;
 
 import com.afeibaili.spring.controller.Canvas;
+import com.afeibaili.spring.controller.Chat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
@@ -17,7 +18,7 @@ public class WebSocketConfiguration {
     @Bean
     public ServerEndpointExporter serverEndpointExporter() {
         ServerEndpointExporter serverEndpointExporter = new ServerEndpointExporter();
-        serverEndpointExporter.setAnnotatedEndpointClasses(Canvas.class);
+        serverEndpointExporter.setAnnotatedEndpointClasses(Canvas.class, Chat.class);
         return serverEndpointExporter;
     }
 }

@@ -4,7 +4,9 @@ import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 
 import java.io.IOException;
-import java.util.*;
+
+import static com.afeibaili.spring.service.CanvasTools.initRecord;
+import static com.afeibaili.spring.service.CanvasTools.canvasSessions;
 
 /**
  * 画布信息的接收与发布
@@ -15,12 +17,10 @@ import java.util.*;
 
 @ServerEndpoint("/canvas")
 public class Canvas {
-    public static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
-    public static final List<String> initRecord = Collections.synchronizedList(new ArrayList<String>());
 
     @OnOpen
     public void onOpen(Session session) {
-        if (!sessions.isEmpty()) {
+        if (!canvasSessions.isEmpty()) {
             initRecord.forEach(m -> {
                 try {
                     session.getBasicRemote().sendText(m);
@@ -30,13 +30,13 @@ public class Canvas {
                 System.out.println("向新来的用户添加消息: " + m);
             });
         }
-        sessions.add(session);
+        canvasSessions.add(session);
         System.out.println("将用户添加到用户组: " + session.getId());
     }
 
     @OnMessage
     public void onMessage(Session session, String message) {
-        sessions.forEach(s -> {
+        canvasSessions.forEach(s -> {
             if (!s.getId().equals(session.getId())) {
                 s.getAsyncRemote().sendText(message);
             }
@@ -47,20 +47,19 @@ public class Canvas {
 
     @OnClose
     public void onClose(Session session, CloseReason reason) {
-        sessions.remove(session);
+        canvasSessions.remove(session);
         System.out.println("用户断开连接并移除用户: " + session.getId() + " 关闭原因: " + reason.getReasonPhrase());
-        if (sessions.isEmpty()) {
+        if (canvasSessions.isEmpty()) {
             initRecord.clear();
             System.out.println("清空消息: " + "onClose");
         }
     }
 
     @OnError
-    public void onError(Session session, Throwable throwable) throws IOException {
-        session.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, "根据错误关闭连接"));
-        sessions.remove(session);
+    public void onError(Session session, Throwable throwable) {
+        canvasSessions.remove(session);
         System.out.println("用户断开连接并移除用户 onError: " + session.getId() + " 抛出错误: " + throwable.getMessage());
-        if (sessions.isEmpty()) {
+        if (canvasSessions.isEmpty()) {
             initRecord.clear();
             System.out.println("清空消息: " + "onError");
         }

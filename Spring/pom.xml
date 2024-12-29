@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.afeibaili</groupId>
-    <artifactId>Spring</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>CanvasSync</artifactId>
+    <version>0.2</version>
     <packaging>war</packaging>
-    <name>Spring</name>
-    <description>Spring</description>
+    <name>CanvasSync</name>
+    <description>CanvasSync</description>
     <url/>
     <licenses>
         <license/>

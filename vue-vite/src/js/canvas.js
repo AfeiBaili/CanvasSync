@@ -5,11 +5,10 @@ const canvas = {
         let canvas = document.querySelector("canvas");
         canvas.width = 1920;
         canvas.height = 1080;
-        let ctx = canvas.getContext("2d");
-        this.pen = ctx
+        this.pen = canvas.getContext("2d")
         this.width = canvas.width;
         this.height = canvas.height;
-        drawBackground(ctx, 20, 0, true)
+        drawBackground(20, 0, true)
     },
     pen: null,
     width: 0,
@@ -19,14 +18,14 @@ const canvas = {
     drawMessage,
 }
 
-function drawBackground(ctx, count, offset, isInit) {
+function drawBackground(count, offset, isInit) {
     if (isInit) {
         offset = window.innerHeight > window.innerWidth ? window.innerHeight : window.innerWidth / count;
     }
     for (let i = 0; i < count; i++) {
-        ctx.fillStyle = "#393939"
-        ctx.fillRect(offset * i + offset / 2, 0, 1, window.innerHeight)
-        ctx.fillRect(0, offset * i + offset / 2, window.innerWidth, 1)
+        canvas.pen.fillStyle = "#393939"
+        canvas.pen.fillRect(offset * i + offset / 2, 0, 1, window.innerHeight)
+        canvas.pen.fillRect(0, offset * i + offset / 2, window.innerWidth, 1)
     }
 }
 
@@ -68,7 +67,7 @@ function drawMessage(r) {
 
 function lastRecord(record) {
     canvas.pen.clearRect(0, 0, canvas.width, canvas.height);
-    drawBackground(canvas.pen, 20, 0, true);
+    drawBackground(20, 0, true);
     drawRecord(record);
 }
 

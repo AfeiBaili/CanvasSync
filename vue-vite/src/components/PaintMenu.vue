@@ -3,6 +3,7 @@ import {usePenStore} from "../store/pen-store.js";
 import {lineT, penT, rectT, roundT} from "../const/pen-state.js";
 import canvas from "../js/canvas.js";
 import {ref} from "vue";
+import websocket from "../js/websocket.js";
 
 let pen = usePenStore();
 
@@ -53,8 +54,9 @@ function setting() {
 
 function clearAll() {
   canvas.pen.clearRect(0, 0, canvas.width, canvas.height);
-  canvas.drawBackground(canvas.pen, 20, 0, true)
+  canvas.drawBackground(20, 0, true)
   pen.record = []
+  websocket.sendChat("/clear")
 }
 </script>
 

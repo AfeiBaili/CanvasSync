@@ -120,7 +120,7 @@ function endDrawing(e) {
     let record = new Record(pen.pen.colors[pen.pen.color], pen.pen.width, pen.pen.type, pen.pen.startPointX, pen.pen.startPointY, pen.pen.endPointX, pen.pen.endPointY);
     pen.record.push(record)
   }
-  websocket.sand(pen.record[pen.record.length - 1])
+  websocket.sendCanvas(pen.record[pen.record.length - 1])
 }
 
 </script>
