@@ -1,0 +1,15 @@
+:root {
+    --paint-menu-radius: 5px;
+    --paint-menu-border-width: 2px;
+    --paint-menu-border-color: #aaaaaa;
+    --paint-menu-list-font-color1: #ccdde6;
+    --paint-menu-list-font-color2: #4cb9f6;
+    --paint-menu-list-line-color: #9a9a9a;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #2b2b2b;
+    overflow: hidden;
+}
