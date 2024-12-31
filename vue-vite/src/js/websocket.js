@@ -44,11 +44,9 @@ const websocket = {
             }
         }
 
-
         onbeforeunload = () => {
             socket.close(1000, "用户关闭");
             chat.close(1000, "用户关闭")
-            return false
         }
     },
     sendCanvas(data) {

@@ -1,12 +1,13 @@
 package com.afeibaili.spring.controller;
 
+import com.afeibaili.spring.service.CanvasTools;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 
 import java.io.IOException;
 
-import static com.afeibaili.spring.service.CanvasTools.initRecord;
 import static com.afeibaili.spring.service.CanvasTools.canvasSessions;
+import static com.afeibaili.spring.service.CanvasTools.initRecord;
 
 /**
  * 画布信息的接收与发布
@@ -36,13 +37,7 @@ public class Canvas {
 
     @OnMessage
     public void onMessage(Session session, String message) {
-        canvasSessions.forEach(s -> {
-            if (!s.getId().equals(session.getId())) {
-                s.getAsyncRemote().sendText(message);
-            }
-        });
-        initRecord.add(message);
-        System.out.println("用户" + session.getId() + "添加消息到消息组: " + message);
+        CanvasTools.sendAll(session, message);
     }
 
     @OnClose

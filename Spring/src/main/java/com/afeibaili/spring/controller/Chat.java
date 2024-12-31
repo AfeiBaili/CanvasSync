@@ -28,13 +28,11 @@ public class Chat {
 
     @OnMessage
     public void onMessage(Session session, String message) {
-        if (message.charAt(0) == '/') ChatTools.parsing(message);
-        chatSessions.forEach(s -> {
-            if (!s.getId().equals(session.getId())) {
-                s.getAsyncRemote().sendText(message);
-            }
-        });
-        System.out.println("用户" + session.getId() + "发送聊天消息: " + message);
+        if (message.charAt(0) == '/') {
+            ChatTools.parsing(session, message);
+        } else {
+            ChatTools.sendAll(session, message);
+        }
     }
 
     @OnClose

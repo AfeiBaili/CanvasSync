@@ -3,11 +3,21 @@ import {usePenStore} from "../store/pen-store.js";
 
 function commandParsing(command) {
     let pen = usePenStore();
-    switch (command) {
+    let parameters = command.split(/ +/)
+    switch (parameters[0]) {
         case '/clear':
-            canvas.pen.clearRect(0, 0, canvas.width, canvas.height);
-            canvas.drawBackground(20, 0, true)
-            pen.record = []
+            canvas.clear();
+            break
+        case "/sync" :
+            if (parameters[1] === "record") {
+                let m = JSON.parse(parameters[2]);
+                pen.record.push(m);
+                canvas.drawMessage(m)
+            }
+            break
+        case "/withdrawn":
+            pen.record.pop()
+            canvas.lastRecord(pen.record)
             break
     }
 }

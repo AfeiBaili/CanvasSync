@@ -1,4 +1,5 @@
 import {lineT, penT, rectT, roundT} from "../const/pen-state.js";
+import {usePenStore} from "../store/pen-store.js";
 
 const canvas = {
     init() {
@@ -16,6 +17,8 @@ const canvas = {
     drawBackground,
     lastRecord,
     drawMessage,
+    clear,
+    drawRecord,
 }
 
 function drawBackground(count, offset, isInit) {
@@ -69,6 +72,13 @@ function lastRecord(record) {
     canvas.pen.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground(20, 0, true);
     drawRecord(record);
+}
+
+function clear() {
+    let pen = usePenStore()
+    canvas.pen.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.drawBackground(20, 0, true)
+    pen.record = []
 }
 
 export default canvas

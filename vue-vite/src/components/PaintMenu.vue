@@ -52,10 +52,19 @@ function changeSize(e) {
 function setting() {
 }
 
+function withdrawn() {
+  pen.record.pop()
+  canvas.lastRecord(pen.record)
+  websocket.sendChat("/withdrawn")
+}
+
+function syncCanvas() {
+  canvas.clear()
+  websocket.sendChat("/sync")
+}
+
 function clearAll() {
-  canvas.pen.clearRect(0, 0, canvas.width, canvas.height);
-  canvas.drawBackground(20, 0, true)
-  pen.record = []
+  canvas.clear()
   websocket.sendChat("/clear")
 }
 </script>
@@ -92,8 +101,16 @@ function clearAll() {
       <span></span>
     </li>
     <li class="line">|</li>
+    <li @click="withdrawn">撤回
+      <span class="withdrawn">↩</span>
+    </li>
+    <li class="line">|</li>
+    <li @click="syncCanvas">同步
+      <span class="sync">⇅</span>
+    </li>
+    <li class="line">|</li>
     <li @click="clearAll">重置
-      <span class="clear">C</span>
+      <span class="clear">↺</span>
     </li>
   </menu>
 </template>
@@ -189,6 +206,18 @@ menu {
     }
 
     .clear {
+      color: #4cb9f6;
+      display: inline-block;
+      transform: translateY(1px);
+    }
+
+    .withdrawn {
+      color: #4cb9f6;
+      display: inline-block;
+      transform: translateY(1px);
+    }
+
+    .sync {
       color: #4cb9f6;
       display: inline-block;
       transform: translateY(1px);
