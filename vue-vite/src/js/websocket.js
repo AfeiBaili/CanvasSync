@@ -53,7 +53,7 @@ const websocket = {
         try {
             socket.send(JSON.stringify(data))
         } catch (err) {
-            socket = new WebSocket('ws://localhost:8080/canvas')
+            socket = new WebSocket(socket)
             socket.send(JSON.stringify(data))
             console.log("图形系统在发送时出错, 原因是: ", err)
         }
@@ -62,7 +62,7 @@ const websocket = {
         try {
             chat.send(message)
         } catch (err) {
-            chat = new WebSocket('ws://localhost:8080/chat')
+            chat = new WebSocket(chat)
             chat.send(message)
             console.log("通讯系统在发送时出错, 原因是: ", err)
         }
