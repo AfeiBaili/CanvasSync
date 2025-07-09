@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class MessageForwardingApplication
 
 fun main(args: Array<String>) {
-	runApplication<MessageForwardingApplication>(*args)
+    runApplication<MessageForwardingApplication>(*args)
 }

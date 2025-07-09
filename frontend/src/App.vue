@@ -1,30 +1,44 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import {getChannelUrl, websocketUrl} from "./const/target_url.js";
+import axios from "axios";
+import MessageSession from "./model/MessageSession.js";
+import {ref} from "vue";
+
+
+let uuid
+
+let socket;
+
+axios.get(getChannelUrl).then(res => {
+  uuid = res.data;
+  socket = new WebSocket(websocketUrl);
+
+  socket.onopen = () => {
+    socket.send(JSON.stringify(new MessageSession(uuid, "test", "init")))
+  }
+
+  socket.onmessage = (event) => {
+    console.log(event.data);
+  }
+})
+
+let value = ref(1);
+
+function sendMessage() {
+  if (socket === undefined) return
+  console.log(new MessageSession(uuid, "test", "消息是：" + value.value));
+  socket.send(JSON.stringify(new MessageSession(uuid, "test", "消息是：" + value.value)));
+  value.value++;
+}
+
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <h1 @click="sendMessage">点我发送消息</h1>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+h1 {
+  user-select: none;
 }
 </style>
