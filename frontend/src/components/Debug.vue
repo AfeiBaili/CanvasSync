@@ -9,5 +9,6 @@ import {isOpenSecondaryCanvas} from "../const/Debug.js";
 <style scoped>
 * {
   position: absolute;
+  user-select: none;
 }
 </style>

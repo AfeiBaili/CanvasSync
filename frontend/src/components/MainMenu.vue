@@ -54,13 +54,6 @@ function clearCanvas() {
   canvas.clearSecondaryCanvas()
 }
 
-function syncCanvas() {
-  canvasConnection.sendCommand("/sync")
-  records.forEach(record => {
-    canvasConnection.sendObjectMessage(record)
-  })
-}
-
 function resetCanvas() {
   clearCanvas()
   records.length = 0
@@ -71,9 +64,6 @@ function retract() {
   canvasConnection.sendCommand("/retract")
   records.pop()
   drawRecords(records)
-  records.forEach(record => {
-    canvasConnection.sendObjectMessage(record)
-  })
 }
 
 </script>
@@ -112,10 +102,6 @@ function retract() {
     <li class="line">|</li>
     <li @click="retract">撤回
       <span class="withdrawn">↩</span>
-    </li>
-    <li class="line">|</li>
-    <li @click="syncCanvas">同步
-      <span class="sync">⇅</span>
     </li>
     <li class="line">|</li>
     <li @click="resetCanvas">重置

@@ -152,7 +152,7 @@ function endDrawing(e) {
     if (!pen.isDrawing) return
     _ClearBackground()
     context = canvas.mainContext
-    context.lineWidth = pen.width + 1
+    context.lineWidth = pen.width
     context.strokeStyle = pen.colors[pen.colorIndex]
     context.fillStyle = pen.colors[pen.colorIndex]
     context.lineCap = 'round';

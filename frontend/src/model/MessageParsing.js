@@ -1,4 +1,4 @@
-import {canvas} from "./CanvasManager.js";
+import {canvas, drawRecords} from "./CanvasManager.js";
 import {records} from "./PenManager.js";
 
 class MessageParsing {
@@ -27,7 +27,8 @@ class MessageParsing {
             this.isExistCommand = true
         })
         map.set("/retract", () => {
-            canvas.clearMainCanvas()
+            records.pop()
+            drawRecords(records)
             this.isExistCommand = true
         })
 
