@@ -26,7 +26,7 @@ object ChannelManager {
     fun sendChannelAllByBinary(session: Session, name: String, bytes: ByteBuffer) {
         map[name]!!.set.forEach {
             if (it == session) return@forEach
-            it.asyncRemote.sendBinary(bytes)
+            it.asyncRemote.sendBinary(bytes.duplicate())
         }
     }
 }
