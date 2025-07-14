@@ -2,6 +2,7 @@ package online.afeibaili.messageforwarding
 
 import jakarta.websocket.Session
 import online.afeibaili.messageforwarding.websocket.pojo.ChannelTable
+import java.nio.ByteBuffer
 
 object ChannelManager {
     val map = HashMap<String, ChannelTable>()
@@ -19,6 +20,13 @@ object ChannelManager {
         map[name]!!.set.forEach {
             if (it == session) return@forEach
             it.asyncRemote.sendText(message)
+        }
+    }
+
+    fun sendChannelAllByBinary(session: Session, name: String, bytes: ByteBuffer) {
+        map[name]!!.set.forEach {
+            if (it == session) return@forEach
+            it.asyncRemote.sendBinary(bytes)
         }
     }
 }
