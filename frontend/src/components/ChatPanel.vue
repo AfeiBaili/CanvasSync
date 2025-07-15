@@ -88,9 +88,11 @@ function sendMessage() {
     text-align: center;
     background-color: transparent;
     transition: all 0.2s;
+    /*
     border-top: var(--paint-menu-border-color) solid var(--paint-menu-border-width);
     border-left: var(--paint-menu-border-color) solid var(--paint-menu-border-width);
     border-right: var(--paint-menu-border-color) solid var(--paint-menu-border-width);
+    */
     box-sizing: border-box;
     font-size: 1em;
   }
