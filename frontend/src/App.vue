@@ -17,7 +17,7 @@ onMounted(() => {
 <template>
   <CanvasPanel/>
   <MainMenu/>
-  <!--<Debug/>-->
   <ChatPanel/>
+  <!--<Debug/>-->
   <ErrorMessage/>
 </template>

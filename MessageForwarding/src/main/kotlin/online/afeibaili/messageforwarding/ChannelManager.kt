@@ -17,16 +17,22 @@ object ChannelManager {
     }
 
     fun sendChannelAll(session: Session, name: String, message: String) {
+        val removedSet = HashSet<Session>()
         map[name]!!.set.forEach {
             if (it == session) return@forEach
-            it.asyncRemote.sendText(message)
+            if (it.isOpen) it.asyncRemote.sendText(message)
+            else removedSet.add(it)
         }
+        map[name]!!.set.removeAll(removedSet)
     }
 
     fun sendChannelAllByBinary(session: Session, name: String, bytes: ByteBuffer) {
+        val removedSet = HashSet<Session>()
         map[name]!!.set.forEach {
             if (it == session) return@forEach
-            it.asyncRemote.sendBinary(bytes.duplicate())
+            if (it.isOpen) it.asyncRemote.sendBinary(bytes.duplicate())
+            else removedSet.add(it)
         }
+        map[name]!!.set.removeAll(removedSet)
     }
 }
