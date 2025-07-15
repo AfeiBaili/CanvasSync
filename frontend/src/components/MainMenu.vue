@@ -5,7 +5,6 @@ import {lineType, penType, rectType, roundType} from "../const/PenType.js";
 import {canvas, drawRecords} from "../model/CanvasManager.js";
 import {canvasConnection} from "../model/websocket/Connection.js";
 import {printInfo} from "../const/ErrorMessage.js";
-import ChatPanel from "./ChatPanel.vue";
 
 const pen = pens.value;
 const isLastColor = ref(false);
