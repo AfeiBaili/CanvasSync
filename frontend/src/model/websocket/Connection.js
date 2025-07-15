@@ -1,26 +1,36 @@
-import {channelName, getChannelUrl, websocketUrl} from "../../const/url.js";
+import {
+    canvasChannelName,
+    chatChannelName,
+    getCanvasChannelUrl,
+    getChatChannelUrl,
+    websocketUrl
+} from "../../const/url.js";
 import axios from "axios";
 import MessageSession from "../class/MessageSession.js";
 import {drawRecord} from "../CanvasManager.js";
 import {records} from "../PenManager.js";
 import {messageParsing} from "../MessageParsing.js";
+import {messageList, messagesElement, scrollView} from "../../const/Message.js";
+import {focus} from "../../const/ChatPanel.js";
+import {nextTick} from "vue";
 
 class Connection {
     socket
     uuid
+    chatUuid
+    chatSocket
 
     init() {
         let s
-        axios.get(getChannelUrl).then((response) => {
-            s = new WebSocket(websocketUrl)
+        axios.get(getCanvasChannelUrl).then((response) => {
             this.uuid = response.data
-
-            s.onopen = () => {
-                canvasConnection.sendCommand("/init")
-                console.log("已连接至服务器")
-            }
-
+            s = new WebSocket(websocketUrl)
             this.socket = s
+
+            this.socket.onopen = () => {
+                canvasConnection.sendCommand("/init")
+                console.log("已连接画布至服务器")
+            }
 
             this.socket.onmessage = (event) => {
                 if (typeof (event.data) == "string") {
@@ -36,12 +46,46 @@ class Connection {
                 })
             }
         })
+        /** 定义聊天socket */
+        axios.get(getChatChannelUrl).then((response) => {
+            this.chatUuid = response.data
+            s = new WebSocket(websocketUrl)
+            this.chatSocket = s
+
+            this.chatSocket.onopen = () => {
+                const stringMessage =
+                    JSON.stringify(new MessageSession(this.chatUuid, chatChannelName, "/init-chat"));
+                s.send(stringMessage)
+                console.log("已连接聊天至服务器")
+            }
+
+            this.chatSocket.onmessage = (event) => {
+                if (event.data === "/init-chat") return
+                messageList.value.push(JSON.parse(event.data))
+                focus.value = true
+                nextTick(() => {
+                    scrollView(messagesElement)
+                }).then(r =>
+                    null
+                )
+                console.log(event.data)
+            }
+        })
 
         return this
     }
 
+    /**
+     * 使用ChatSocket发送聊天信息
+     * @param message
+     */
+    sendChatMessage(message) {
+        const stringMessage = JSON.stringify(new MessageSession(this.chatUuid, chatChannelName, message));
+        this.chatSocket.send(stringMessage)
+    }
+
     sendObjectMessage(message) {
-        const stringMessage = JSON.stringify(new MessageSession(this.uuid, channelName, JSON.stringify(message)));
+        const stringMessage = JSON.stringify(new MessageSession(this.uuid, canvasChannelName, JSON.stringify(message)));
 
         this.sendBinaryMessage(stringMessage).then(response => {
             this.socket.send(response);
@@ -49,7 +93,7 @@ class Connection {
     }
 
     sendCommand(message) {
-        this.socket.send(JSON.stringify(new MessageSession(this.uuid, channelName, message)));
+        this.socket.send(JSON.stringify(new MessageSession(this.uuid, canvasChannelName, message)));
     }
 
     async sendBinaryMessage(text) {

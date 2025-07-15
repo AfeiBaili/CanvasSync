@@ -4,14 +4,14 @@ import {isOk, message} from "../const/ErrorMessage.js";
 
 <template>
   <transition name="fade">
-    <div v-show="!isOk" class="message">{{ message }}
+    <div v-show="!isOk" class="message-input">{{ message }}
       <button @click="isOk = true">确认</button>
     </div>
   </transition>
 </template>
 
 <style scoped>
-.message {
+.message-input {
   position: absolute;
   left: 50%;
   top: 15%;
